@@ -19,6 +19,7 @@ public class RateSuperMarket extends AppCompatActivity {
     RatingBar cheeseRating;
     RatingBar easeRating;
     TextView rateAverage;
+    private SuperMarket currentRating;
 
 
     @Override

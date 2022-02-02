@@ -2,14 +2,18 @@ package com.example.supermarket;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -23,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         currentMarket = new SuperMarket();
-
+        initSaveButton();
+        initTextChangedEvents();
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -33,9 +38,6 @@ public class MainActivity extends AppCompatActivity {
                 openRateSuperMarket();
             }
         });
-
-        initTextChangedEvents();
-        initSaveButton();
     }
 
     //Intent method for initializing RateSuperMarket button
@@ -148,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                hideKeyboard();
                 boolean wasSuccessful;
                 ContactDataSource ds = new ContactDataSource(MainActivity.this);
                 try {
@@ -155,6 +158,11 @@ public class MainActivity extends AppCompatActivity {
 
                     if (currentMarket.getMarketID() == -1) {
                         wasSuccessful = ds.insertContact(currentMarket);
+
+                        if (wasSuccessful) {
+                            int newId = ds.getLastContactID();
+                            currentMarket.setMarketID(newId);
+                        }
                     }
                     else {
                         wasSuccessful = ds.updateContact(currentMarket);
@@ -165,12 +173,49 @@ public class MainActivity extends AppCompatActivity {
                     wasSuccessful = false;
                 }
 
-//                if (wasSuccessful) {
-//                    ToggleButton editToggle = findViewById(R.id.toggleButtonEdit);
-//                    editToggle.toggle();
-//                    setForEditing(false);
-//                }
+               if (wasSuccessful) {
+                    setForEditing(false);
+                }
             }
         });
+    }
+
+    //Partial hideKeyboard() Method
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        EditText editName = findViewById(R.id.editMarketName);
+        imm.hideSoftInputFromWindow(editName.getWindowToken(), 0);
+        EditText editAddress = findViewById(R.id.editMarketAddress);
+        imm.hideSoftInputFromWindow(editAddress.getWindowToken(), 0);
+        EditText editCity = findViewById(R.id.editMarketCity);
+        imm.hideSoftInputFromWindow(editCity.getWindowToken(), 0);
+        EditText editState = findViewById(R.id.editMarketState);
+        imm.hideSoftInputFromWindow(editState.getWindowToken(), 0);
+        EditText editZipcode = findViewById(R.id.editMarketZipcode);
+        imm.hideSoftInputFromWindow(editZipcode.getWindowToken(), 0);
+    }
+
+    //Code to enable the Data Entry Form
+    private void setForEditing(boolean enabled) {
+        EditText editName = findViewById(R.id.editMarketName);
+        EditText editAddress = findViewById(R.id.editMarketAddress);
+        EditText editCity = findViewById(R.id.editMarketCity);
+        EditText editState = findViewById(R.id.editMarketState);
+        EditText editZipCode = findViewById(R.id.editMarketZipcode);
+
+        editName.setEnabled(enabled);
+        editAddress.setEnabled(enabled);
+        editCity.setEnabled(enabled);
+        editState.setEnabled(enabled);
+        editZipCode.setEnabled(enabled);
+
+        if (enabled) {
+            editName.requestFocus();
+        }
+        else{
+            ScrollView s = findViewById(R.id.scrollView);
+            s.fullScroll(ScrollView.FOCUS_UP);
+        }
     }
 }

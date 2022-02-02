@@ -8,9 +8,54 @@ public class SuperMarket {
     private String city;
     private String state;
     private String zipCode;
+    private int liquorRating;
+    private int productRating;
+    private int meatRating;
+    private int cheeseRating;
+    private int easeRating;
 
     public SuperMarket() {
         marketID = -1;
+    }
+
+    public int getLiquorRating() {
+        return liquorRating;
+    }
+
+    public void setLiquorRating(int liquorRating) {
+        this.liquorRating = liquorRating;
+    }
+
+    public int getProductRating() {
+        return productRating;
+    }
+
+    public void setProductRating(int productRating) {
+        this.productRating = productRating;
+    }
+
+    public int getMeatRating() {
+        return meatRating;
+    }
+
+    public void setMeatRating(int meatRating) {
+        this.meatRating = meatRating;
+    }
+
+    public int getCheeseRating() {
+        return cheeseRating;
+    }
+
+    public void setCheeseRating(int cheeseRating) {
+        this.cheeseRating = cheeseRating;
+    }
+
+    public int getEaseRating() {
+        return easeRating;
+    }
+
+    public void setEaseRating(int easeRating) {
+        this.easeRating = easeRating;
     }
 
     public int getMarketID() {
