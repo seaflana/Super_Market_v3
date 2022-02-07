@@ -1,3 +1,7 @@
+//Database Helper class whose only function is to provide for the creation, modification, and deletion of tables in the database
+//subclass of the SQLiteOpenHelper class
+
+
 package com.example.supermarket;
 
 import android.content.Context;

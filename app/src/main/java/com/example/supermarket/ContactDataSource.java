@@ -15,6 +15,7 @@ public class ContactDataSource {
         dbHelper = new ContactDBHelper(context);
     }
 
+    //Open and close methods are used to access and end access to the database
     public void open() throws SQLException {
         database = dbHelper.getWritableDatabase();
     }
