@@ -1,14 +1,10 @@
 package com.example.supermarket;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -29,8 +25,9 @@ public class RateSuperMarket extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ratemarket);
-        initSaveRatingButton();
+        currentContact = new Contact();
         initRatingChangedListener();
+        initSaveRatingButton();
 
 
 
@@ -56,12 +53,48 @@ public class RateSuperMarket extends AppCompatActivity {
 
 
     private void initRatingChangedListener() {
-        final RatingBar rb = findViewById(R.id.liquorRating);
-        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        final RatingBar lr = findViewById(R.id.liquorRating);
+        lr.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                final int rb = ratingBar.getNumStars();
-                currentContact.setLiquorRating(rb);
+                final int lr = ratingBar.getNumStars();
+                currentContact.setLiquorRating(lr);
+            }
+        });
+
+        final RatingBar pr = findViewById(R.id.produceRating);
+        pr.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                final int pr = ratingBar.getNumStars();
+                currentContact.setProductRating(pr);
+            }
+        });
+
+        final RatingBar mr = findViewById(R.id.meatRating);
+        mr.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                final int mr = ratingBar.getNumStars();
+                currentContact.setMeatRating(mr);
+            }
+        });
+
+        final RatingBar cr = findViewById(R.id.cheeseRating);
+        cr.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                final int cr = ratingBar.getNumStars();
+                currentContact.setCheeseRating(cr);
+            }
+        });
+
+        final RatingBar er = findViewById(R.id.easeRating);
+        er.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                final int er = ratingBar.getNumStars();
+                currentContact.setEaseRating(er);
             }
         });
     }
@@ -110,7 +143,7 @@ public class RateSuperMarket extends AppCompatActivity {
         });
     }
 
-    //Intent method for initializing RateSuperMarket button
+    //Intent method for returning to MainActivity
     public void openMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

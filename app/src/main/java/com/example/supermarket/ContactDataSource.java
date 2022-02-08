@@ -36,6 +36,11 @@ public class ContactDataSource {
             initialValues.put("city", c.getCity());
             initialValues.put("state", c.getState());
             initialValues.put("zipcode", c.getZipCode());
+            initialValues.put("liquorrating", c.getLiquorRating());
+            initialValues.put("productrating", c.getProductRating());
+            initialValues.put("meatrating", c.getMeatRating());
+            initialValues.put("cheeserating", c.getCheeseRating());
+            initialValues.put("easerating", c.getEaseRating());
 
             didSucceed = database.insert("contact", null, initialValues) > 0;
         }
@@ -56,6 +61,11 @@ public class ContactDataSource {
             updateValues.put("city", c.getCity());
             updateValues.put("state", c.getState());
             updateValues.put("zipcode", c.getZipCode());
+            updateValues.put("liquorrating", c.getLiquorRating());
+            updateValues.put("productrating", c.getProductRating());
+            updateValues.put("meatrating", c.getMeatRating());
+            updateValues.put("cheeserating", c.getCheeseRating());
+            updateValues.put("easerating", c.getEaseRating());
 
             didSucceed = database.update("contact", updateValues, "_id=" + rowId, null) > 0;
         }
