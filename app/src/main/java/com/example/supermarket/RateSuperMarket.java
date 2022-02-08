@@ -22,7 +22,7 @@ public class RateSuperMarket extends AppCompatActivity {
     RatingBar cheeseRating;
     RatingBar easeRating;
     TextView rateAverage;
-    //SuperMarket currentMarket;
+    Contact currentContact;
 
 
     @Override
@@ -31,6 +31,7 @@ public class RateSuperMarket extends AppCompatActivity {
         setContentView(R.layout.activity_ratemarket);
         initSaveRatingButton();
         initRatingChangedListener();
+
 
 
         mainButton = (Button) findViewById(R.id.button3);
@@ -59,7 +60,8 @@ public class RateSuperMarket extends AppCompatActivity {
         rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                final float rb = ratingBar.getNumStars();
+                final int rb = ratingBar.getNumStars();
+                currentContact.setLiquorRating(rb);
             }
         });
     }
@@ -71,11 +73,39 @@ public class RateSuperMarket extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                //Get average rating
                 float avg = liquorRating.getRating() + produceRating.getRating() +
                         meatRating.getRating() + cheeseRating.getRating() +
                         easeRating.getRating();
                 avg = avg / 5;
                 rateAverage.setText("" + avg);
+
+                //Insert rating into Contact Object
+                boolean wasSuccessful;
+                ContactDataSource ds = new ContactDataSource(RateSuperMarket.this);
+                try {
+                    ds.open();
+
+                    if (currentContact.getContactID() == -1) {
+                        wasSuccessful = ds.insertContact(currentContact);
+
+                        if (wasSuccessful) {
+                            int newId = ds.getLastContactID();
+                            currentContact.setContactID(newId);
+                        }
+                    }
+                    else {
+                        wasSuccessful = ds.updateContact(currentContact);
+                    }
+                    ds.close();
+                }
+                catch (Exception e) {
+                    wasSuccessful = false;
+                }
+
+                if (wasSuccessful) {
+                    System.out.println("Successful");
+                }
             }
         });
     }
@@ -85,7 +115,7 @@ public class RateSuperMarket extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
+}
 //    //Code to enable Data Entry for Rating Form
 //    private void setForEditing(boolean enabled) {
 //

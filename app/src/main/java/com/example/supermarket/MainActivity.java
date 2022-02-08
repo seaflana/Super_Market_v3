@@ -2,7 +2,6 @@ package com.example.supermarket;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,23 +11,20 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RatingBar;
 import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.ToggleButton;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button button;
-    private SuperMarket currentMarket;
+    private Contact currentContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        currentMarket = new SuperMarket();
-        initSaveButton();
+        currentContact = new Contact();
         initTextChangedEvents();
+        initSaveButton();
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -48,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     //TextChanged Event method
     private void initTextChangedEvents() {
-        final EditText etMarketName = findViewById(R.id.editMarketName);
-        etMarketName.addTextChangedListener(new TextWatcher() {
+        final EditText etContactName = findViewById(R.id.editMarketName);
+        etContactName.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -63,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                currentMarket.setMarketName(etMarketName.getText().toString());
+                currentContact.setContactName(etContactName.getText().toString());
             }
         });
 
@@ -82,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                currentMarket.setStreetAddress(etStreetAddress.getText().toString());
+                currentContact.setStreetAddress(etStreetAddress.getText().toString());
             }
         });
 
@@ -101,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                currentMarket.setCity(etCity.getText().toString());
+                currentContact.setCity(etCity.getText().toString());
             }
         });
 
@@ -120,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                currentMarket.setState(etState.getText().toString());
+                currentContact.setState(etState.getText().toString());
             }
         });
 
@@ -139,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                currentMarket.setZipCode(etZipcode.getText().toString());
+                currentContact.setZipCode(etZipcode.getText().toString());
             }
         });
     }
@@ -156,25 +152,21 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     ds.open();
 
-                    if (currentMarket.getMarketID() == -1) {
-                        wasSuccessful = ds.insertContact(currentMarket);
+                    if (currentContact.getContactID() == -1) {
+                        wasSuccessful = ds.insertContact(currentContact);
 
                         if (wasSuccessful) {
                             int newId = ds.getLastContactID();
-                            currentMarket.setMarketID(newId);
+                            currentContact.setContactID(newId);
                         }
                     }
                     else {
-                        wasSuccessful = ds.updateContact(currentMarket);
+                        wasSuccessful = ds.updateContact(currentContact);
                     }
                     ds.close();
                 }
                 catch (Exception e) {
                     wasSuccessful = false;
-                }
-
-               if (wasSuccessful) {
-                    setForEditing(false);
                 }
             }
         });
@@ -196,26 +188,26 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(editZipcode.getWindowToken(), 0);
     }
 
-    //Code to enable the Data Entry Form
-    private void setForEditing(boolean enabled) {
-        EditText editName = findViewById(R.id.editMarketName);
-        EditText editAddress = findViewById(R.id.editMarketAddress);
-        EditText editCity = findViewById(R.id.editMarketCity);
-        EditText editState = findViewById(R.id.editMarketState);
-        EditText editZipCode = findViewById(R.id.editMarketZipcode);
-
-        editName.setEnabled(enabled);
-        editAddress.setEnabled(enabled);
-        editCity.setEnabled(enabled);
-        editState.setEnabled(enabled);
-        editZipCode.setEnabled(enabled);
-
-        if (enabled) {
-            editName.requestFocus();
-        }
-        else{
-            ScrollView s = findViewById(R.id.scrollView);
-            s.fullScroll(ScrollView.FOCUS_UP);
-        }
-    }
+    //Code to enable the Data Entry Form which passes true if the toggle button is enabled
+//    private void setForEditing(boolean enabled) {
+//        EditText editName = findViewById(R.id.editMarketName);
+//        EditText editAddress = findViewById(R.id.editMarketAddress);
+//        EditText editCity = findViewById(R.id.editMarketCity);
+//        EditText editState = findViewById(R.id.editMarketState);
+//        EditText editZipCode = findViewById(R.id.editMarketZipcode);
+//
+//        editName.setEnabled(enabled);
+//        editAddress.setEnabled(enabled);
+//        editCity.setEnabled(enabled);
+//        editState.setEnabled(enabled);
+//        editZipCode.setEnabled(enabled);
+//
+//        if (enabled) {
+//            editName.requestFocus();
+//        }
+//        else{
+//            ScrollView s = findViewById(R.id.scrollView);
+//            s.fullScroll(ScrollView.FOCUS_UP);
+//        }
+//    }
 }

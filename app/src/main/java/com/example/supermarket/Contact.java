@@ -1,9 +1,9 @@
 package com.example.supermarket;
 
-public class SuperMarket {
+public class Contact {
 
-    private int marketID;
-    private String marketName;
+    private int contactID;
+    private String contactName;
     private String streetAddress;
     private String city;
     private String state;
@@ -14,8 +14,8 @@ public class SuperMarket {
     private int cheeseRating;
     private int easeRating;
 
-    public SuperMarket() {
-        marketID = -1;
+    public Contact() {
+        contactID = -1;
     }
 
     public int getLiquorRating() {
@@ -58,20 +58,20 @@ public class SuperMarket {
         this.easeRating = easeRating;
     }
 
-    public int getMarketID() {
-        return marketID;
+    public int getContactID() {
+        return contactID;
     }
 
-    public void setMarketID(int marketID) {
-        this.marketID = marketID;
+    public void setContactID(int contactID) {
+        this.contactID = contactID;
     }
 
-    public String getMarketName() {
-        return marketName;
+    public String getContactName() {
+        return contactName;
     }
 
-    public void setMarketName(String marketName) {
-        this.marketName = marketName;
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
     }
 
     public String getStreetAddress() {

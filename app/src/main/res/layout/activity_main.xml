@@ -62,7 +62,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="Name"
+        android:hint="Name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
-        android:text="Address:"
+        android:hint="Address:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editMarketName" />
 
@@ -84,7 +84,7 @@
         android:ems="16"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="Enter Address"
+        android:hint="Enter Address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -97,7 +97,7 @@
         android:ems="8"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="City"
+        android:hint="City"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editMarketAddress" />
 
@@ -111,7 +111,7 @@
         android:inputType="textPersonName"
         android:minWidth="48dp"
         android:minHeight="48dp"
-        android:text="State"
+        android:hint="State"
         app:layout_constraintStart_toEndOf="@+id/editMarketCity"
         app:layout_constraintTop_toBottomOf="@+id/editMarketAddress" />
 
@@ -124,7 +124,7 @@
         android:ems="4"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="Zipcode"
+        android:hint="Zipcode"
         app:layout_constraintStart_toEndOf="@+id/editMarketState"
         app:layout_constraintTop_toBottomOf="@+id/editMarketAddress" />
 
