@@ -13,7 +13,16 @@
             android:name=".RateSuperMarket"
             android:exported="false" />
         <activity
+            android:name=".ContactSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ContactMapActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ContactListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

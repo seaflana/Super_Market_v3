@@ -11,6 +11,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,9 +27,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        currentContact = new Contact();
+
+        initListButton();
+        initMapButton();
+        initSettingsButton();
+        initToggleButton();
+        setForEditing(false);
         initTextChangedEvents();
         initSaveButton();
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            initContact(extras.getInt("contactId"));
+        }
+        else {
+            currentContact = new Contact();
+        }
 
         button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +52,72 @@ public class MainActivity extends AppCompatActivity {
                 openRateSuperMarket();
             }
         });
+    }
+
+    private void initListButton() {
+        ImageButton ibList = findViewById(R.id.imageButtonList);
+        ibList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ContactListActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+    }
+    private void initMapButton() {
+        ImageButton ibList = findViewById(R.id.imageButtonMap);
+        ibList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ContactMapActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+    }
+    private void initSettingsButton() {
+        ImageButton ibList = findViewById(R.id.imageButtonSettings);
+        ibList.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ContactSettingsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initToggleButton() {
+        final ToggleButton editToggle = findViewById(R.id.toggleButtonEdit);
+        editToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setForEditing(editToggle.isChecked());
+            }
+        });
+    }
+
+    //Code to enable the Data Entry Form which passes true if the toggle button is enabled
+    private void setForEditing(boolean enabled) {
+        EditText editName = findViewById(R.id.editMarketName);
+        EditText editAddress = findViewById(R.id.editMarketAddress);
+        EditText editCity = findViewById(R.id.editMarketCity);
+        EditText editState = findViewById(R.id.editMarketState);
+        EditText editZipCode = findViewById(R.id.editMarketZipcode);
+        Button buttonSave = findViewById(R.id.button2);
+
+        editName.setEnabled(enabled);
+        editAddress.setEnabled(enabled);
+        editCity.setEnabled(enabled);
+        editState.setEnabled(enabled);
+        editZipCode.setEnabled(enabled);
+        buttonSave.setEnabled(enabled);
+
+        if (enabled) {
+            editName.requestFocus();
+        }
+        else{
+            ScrollView s = findViewById(R.id.scrollView);
+            s.fullScroll(ScrollView.FOCUS_UP);
+        }
     }
 
     //Intent method for initializing RateSuperMarket button
@@ -146,15 +230,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                hideKeyboard();
                 boolean wasSuccessful;
+                hideKeyboard();
                 ContactDataSource ds = new ContactDataSource(MainActivity.this);
                 try {
                     ds.open();
 
                     if (currentContact.getContactID() == -1) {
                         wasSuccessful = ds.insertContact(currentContact);
-
                         if (wasSuccessful) {
                             int newId = ds.getLastContactID();
                             currentContact.setContactID(newId);
@@ -188,26 +271,31 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(editZipcode.getWindowToken(), 0);
     }
 
-    //Code to enable the Data Entry Form which passes true if the toggle button is enabled
-//    private void setForEditing(boolean enabled) {
-//        EditText editName = findViewById(R.id.editMarketName);
-//        EditText editAddress = findViewById(R.id.editMarketAddress);
-//        EditText editCity = findViewById(R.id.editMarketCity);
-//        EditText editState = findViewById(R.id.editMarketState);
-//        EditText editZipCode = findViewById(R.id.editMarketZipcode);
-//
-//        editName.setEnabled(enabled);
-//        editAddress.setEnabled(enabled);
-//        editCity.setEnabled(enabled);
-//        editState.setEnabled(enabled);
-//        editZipCode.setEnabled(enabled);
-//
-//        if (enabled) {
-//            editName.requestFocus();
-//        }
-//        else{
-//            ScrollView s = findViewById(R.id.scrollView);
-//            s.fullScroll(ScrollView.FOCUS_UP);
-//        }
-//    }
+    //Initialize Contact information
+    private void initContact(int id) {
+
+        ContactDataSource ds = new ContactDataSource(MainActivity.this);
+        try {
+            ds.open();
+            currentContact = ds.getSpecificContact(id);
+            ds.close();
+        }
+        catch (Exception e) {
+            Toast.makeText(this, "Load Contact Failed", Toast.LENGTH_LONG).show();
+        }
+
+        EditText editName = findViewById(R.id.editMarketName);
+        EditText editAddress = findViewById(R.id.editMarketAddress);
+        EditText editCity = findViewById(R.id.editMarketCity);
+        EditText editState = findViewById(R.id.editMarketState);
+        EditText editZipCode = findViewById(R.id.editMarketZipcode);
+
+
+        editName.setText(currentContact.getContactName());
+        editAddress.setText(currentContact.getStreetAddress());
+        editCity.setText(currentContact.getCity());
+        editState.setText(currentContact.getState());
+        editZipCode.setText(currentContact.getZipCode());
+
+    }
 }
